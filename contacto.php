@@ -1,14 +1,20 @@
-<?php 
+<?php
+  
+  $name = '';
+  $email = '';
+  $body = '';
+
   if (isset($_POST['submit'])) {
-    require 'phpmailer/PHPMailerAutoload.php';
+    require 'phpmailer/src/Exception.php';
+    require 'phpmailer/src/PHPMailer.php';
 
     function sendEmail($to, $from, $fromName, $body){
-      $mail = new PHPMailer();
+      $mail = new PHPMailer(true);
       $mail->setFrom($from, $fromName);
       $mail->addAddress($to);
       $mail->Subject = 'Consulta a CarnivoriTa';
       $mail->Body = $body;
-      $mail->isHTML(isHTML: false);
+      $mail->isHTML(false);
 
       return $mail->send();
     }
@@ -17,7 +23,13 @@
     $email = $_POST['email'];
     $body = $_POST['body'];
 
-    sendEmail(to:'sebas.sandon@gmail.com',$email,$name,$body);
+    if(sendEmail('sebas.sandon@gmail.com',$email,$name,$body)){
+        echo 'Consulta Enviada';
+        //echo '<script type="text/javascript">alert("Consulta Enviada"); </script>';
+    }else{
+      echo 'Consulta No Enviada';
+      //echo '<script type="text/javascript">alert("Error al Enviar"); </script>';
+    }
 
   }
 ?>
