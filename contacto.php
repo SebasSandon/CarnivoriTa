@@ -1,3 +1,27 @@
+<?php 
+  if (isset($_POST['submit'])) {
+    require 'phpmailer/PHPMailerAutoload.php';
+
+    function sendEmail($to, $from, $fromName, $body){
+      $mail = new PHPMailer();
+      $mail->setFrom($from, $fromName);
+      $mail->addAddress($to);
+      $mail->Subject = 'Consulta a CarnivoriTa';
+      $mail->Body = $body;
+      $mail->isHTML(isHTML: false);
+
+      return $mail->send();
+    }
+    
+    $name = $_POST['name'];
+    $email = $_POST['email'];
+    $body = $_POST['body'];
+
+    sendEmail(to:'sebas.sandon@gmail.com',$email,$name,$body);
+
+  }
+?>
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -82,15 +106,19 @@
 	<!--Formulario-->
 	<section class="container mt-4 mb-4 pt-4 pb-4 border border-success">
 	<form>
+    <div class="form-group">
+      <label for="FormControlInput1">Su nombre</label>
+      <input type="text" class="form-control" name="name" id="FormControlInput1" placeholder="Juan Perez" required>
+    </div>
 	  <div class="form-group">
-	    <label for="exampleFormControlInput1">Dirección de correo</label>
-	    <input type="email" class="form-control" id="exampleFormControlInput1" placeholder="micorreo@ejemplo.cl">
+	    <label for="FormControlInput2">Dirección de correo</label>
+	    <input type="email" class="form-control" name="email" id="FormControlInput2" placeholder="micorreo@ejemplo.cl" required>
 	  </div>
 	  <div class="form-group">
-	    <label for="exampleFormControlTextarea1">Escriba su consulta</label>
-	    <textarea class="form-control" id="exampleFormControlTextarea1" rows="5"></textarea>
+	    <label for="FormControlTextarea">Escriba su consulta</label>
+	    <textarea class="form-control" name="body" id="FormControlTextarea" rows="5"></textarea>
 	  </div>
-	  <button type="button" class="btn btn-outline-info">Enviar</button>
+	  <input type="submit" name="submit" value="Enviar Consulta" class="btn btn-outline-info">
 	</form>
 	</section>
 
